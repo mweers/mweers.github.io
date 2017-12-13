@@ -3,11 +3,12 @@ body {
 	font-family: monospace;
 	margin: auto;
     width: 50%;
-	padding: 10px;
+	padding: 20px;
 }
 
 h1 {
-	color: 5a6d56;
+	color: #5a6d56;
+	font-size: 36px;
 }
 
 div.main {
@@ -15,4 +16,10 @@ div.main {
 	margin-left: 100px;
 	margin-right: 100px;
 	opacity: 0.25;
+}
+
+a:link, a:visited, a:hover, a:active {
+    text-decoration: none;
+	color: #5a6d56;
+	font-size: 20px;
 }
