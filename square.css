@@ -1,0 +1,12 @@
+  .rectangle { 
+	width: 200px;
+	height: 100px;
+	background: red;
+	margin: auto;
+  }
+
+  .rectangle:after {
+    content: "";
+    display: block;
+    padding-bottom: 100%;
+  }
