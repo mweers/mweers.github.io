@@ -6,15 +6,41 @@ body {
 	padding: 20px;
 }
 
+div.middle {
+    position: absolute;
+    left:50%;
+	top:50%;
+}
+
 .image:hover {
 	filter: invert(50%);
 }
 
+p {
+
+}
+
 h1 {
-	color: #5a6d56;
+	/*color: #5a6d56;*/
 	font-size: 36px;
 }
 
+h2 {
+    margin:0;
+    padding:0;
+}
+
+h3 {
+    margin:0;
+	padding:0;
+	font-size: 16px;
+	font-weight:normal;
+}
+
+h4 {
+    margin:0;
+    padding:0;
+}
 div.main {
 	background-color: lightgreen;
 	margin-left: 100px;
