@@ -18,6 +18,27 @@ var dataset = d3.csv("daily.csv").then(function(data)
       //draw chart
 
     });
+    
+d3.csv('daily.csv')
+.then(makeChart);
+
+function makeChart(steps) {
+  
+  var dayLabels = steps.map(function(d) {return d.Date});
+  var stepData = steps.map(function(d) {return d.Steps);
+  
+  var chart = new Chart('chart', {
+    type: 'vertialBar',
+    data: {
+      labels: dayLabels,
+      datasets: [
+        {
+          data: stepData
+        }
+      ]
+    }
+  });
+}
 
 </script>
 
