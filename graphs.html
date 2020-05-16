@@ -9,23 +9,13 @@
 <!--<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>-->
 </head>
 <body>
+<canvas id="chart">
 <script>
-
-var dataset = d3.csv("daily.csv").then(function(data)
-    {
-      console.log(data);
-      //format data if required...
-      //draw chart
-
-    });
-    
-d3.csv('daily.csv')
-.then(makeChart);
 
 function makeChart(steps) {
   
   var dayLabels = steps.map(function(d) {return d.Date});
-  var stepData = steps.map(function(d) {return d.Steps);
+  var stepData = steps.map(function(d) {return d.Steps});
   
   var chart = new Chart('chart', {
     type: 'vertialBar',
@@ -40,7 +30,10 @@ function makeChart(steps) {
   });
 }
 
-</script>
+d3.csv('daily.csv')
+.then(makeChart);
 
+</script>
+</canvas>
 </body> 
 </html>
