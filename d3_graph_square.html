@@ -4,11 +4,21 @@
     <title>Daily Step Count Activity Graph</title>
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <style>
+        :root {
+            --color-light-muted-green: oklch(90% 0.14 145deg);
+            --color-light-green: oklch(80% 0.17 145deg);
+            --color-mid-green: oklch(70% 0.20 145deg);
+            --color-dark-green: oklch(60% 0.23 145deg);
+            --color-darker-muted-green: oklch(50% 0.26 145deg);
+            --gutter: 100px; /* Gutter size */
+        }
         body, html {
             margin: 0;
             padding: 0;
-            width: 90%;
+            width: 100%;
             height: 100%;
+            overflow-x: hidden;
+            overflow-y: hidden;
         }
         .tooltip {
             position: absolute;
@@ -17,7 +27,7 @@
             height: auto;
             padding: 2px;
             font: 12px sans-serif;
-            background: oklch(1 0 89.876);
+            background: oklch(0.943 0.017 61.953);
             border: 1px solid oklch(0.898 0 89.876);
             border-radius: 3px;
             pointer-events: none;
@@ -45,8 +55,8 @@
         };
 
         const calculateSquareSize = () => {
-            const gutter = 20;
-            const windowWidth = window.innerWidth - gutter;
+            const bodyStyle = getComputedStyle(document.body);
+            const windowWidth = parseInt(bodyStyle.width, 10); // Get the computed width
             const squarePad = 1;
             const squareSize = 15;
             const squaresInRow = Math.floor(windowWidth / (squareSize + squarePad));
@@ -54,11 +64,12 @@
         };
 
         function determineColor(steps) {
-            if (steps <= 15000) return 'oklch(90% 0.14 145deg)'; // Light muted green
-            else if (steps <= 25000) return 'oklch(80% 0.17 145deg)'; // Light green
-            else if (steps <= 50000) return 'oklch(70% 0.20 145deg)'; // Mid green
-            else if (steps <= 70000) return 'oklch(60% 0.23 145deg)'; // Dark green
-            else return 'oklch(50% 0.26 145deg)'; // Darker muted green
+            const rootStyle = getComputedStyle(document.documentElement);
+            if (steps <= 15000) return rootStyle.getPropertyValue('--color-light-muted-green');
+            else if (steps <= 25000) return rootStyle.getPropertyValue('--color-light-green');
+            else if (steps <= 50000) return rootStyle.getPropertyValue('--color-mid-green');
+            else if (steps <= 70000) return rootStyle.getPropertyValue('--color-dark-green');
+            return rootStyle.getPropertyValue('--color-darker-muted-green');
         }
 
         const drawGraph = () => {
@@ -71,11 +82,15 @@
                         d.Steps = +d.Steps;
                     });
 
+                    const svgWidth = parseInt(getComputedStyle(document.body).width, 10);
                     const svgHeight = (squareSize + squarePad) * Math.ceil(data.length / squaresInRow);
+
                     svg = d3.select('body').selectAll('svg').data([null]);
                     svg = svg.enter().append('svg').merge(svg)
-                        .attr('width', window.innerWidth)
-                        .attr('height', svgHeight);
+                        .attr('width', svgWidth)
+                        .attr('height', svgHeight)
+                        .style('display', 'block') // Ensure the SVG is block-level for centering
+                        .style('margin', 'auto'); // Automatically margin for horizontal centering
 
                     const squares = svg.selectAll('.day-square').data(data);
                     squares.enter().append('rect')
@@ -85,6 +100,8 @@
                         .attr('y', (_, i) => (squareSize + squarePad) * Math.floor(i / squaresInRow))
                         .attr('width', squareSize)
                         .attr('height', squareSize)
+                        .attr('rx', 5) // Rounded corner radius along x-axis
+                        .attr('ry', 5) // Rounded corner radius along y-axis
                         .attr('fill', d => determineColor(d.Steps))
                         .on('mouseover', function(event, d) {
                             // Get tooltip dimensions
