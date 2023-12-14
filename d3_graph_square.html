@@ -10,13 +10,13 @@
             --color-mid-green: oklch(70% 0.20 145deg);
             --color-dark-green: oklch(60% 0.23 145deg);
             --color-darker-muted-green: oklch(50% 0.26 145deg);
-            --gutter: 100px; /* Gutter size */
         }
         body, html {
-            margin: 0;
+            margin: 0 auto;
             padding: 0;
-            width: 100%;
+            width: 99%;
             height: 100%;
+            background: oklch(0.958 0.01 145.496);
             overflow-x: hidden;
             overflow-y: hidden;
         }
@@ -27,7 +27,7 @@
             height: auto;
             padding: 2px;
             font: 12px sans-serif;
-            background: oklch(0.943 0.017 61.953);
+            background: oklch(1 0 89.876);
             border: 1px solid oklch(0.898 0 89.876);
             border-radius: 3px;
             pointer-events: none;
@@ -57,7 +57,7 @@
         const calculateSquareSize = () => {
             const bodyStyle = getComputedStyle(document.body);
             const windowWidth = parseInt(bodyStyle.width, 10); // Get the computed width
-            const squarePad = 1;
+            const squarePad = 2;
             const squareSize = 15;
             const squaresInRow = Math.floor(windowWidth / (squareSize + squarePad));
             return [(windowWidth / squaresInRow) - squarePad, squarePad, squaresInRow];
@@ -89,8 +89,8 @@
                     svg = svg.enter().append('svg').merge(svg)
                         .attr('width', svgWidth)
                         .attr('height', svgHeight)
-                        .style('display', 'block') // Ensure the SVG is block-level for centering
-                        .style('margin', 'auto'); // Automatically margin for horizontal centering
+                        .style('margin', '20px auto') // Add margin to top (and bottom for symmetry) while keeping it centered horizontally
+
 
                     const squares = svg.selectAll('.day-square').data(data);
                     squares.enter().append('rect')
@@ -100,9 +100,11 @@
                         .attr('y', (_, i) => (squareSize + squarePad) * Math.floor(i / squaresInRow))
                         .attr('width', squareSize)
                         .attr('height', squareSize)
-                        .attr('rx', 5) // Rounded corner radius along x-axis
-                        .attr('ry', 5) // Rounded corner radius along y-axis
+                        // .attr('rx', 5) // Rounded corner radius along x-axis
+                        // .attr('ry', 5) // Rounded corner radius along y-axis
                         .attr('fill', d => determineColor(d.Steps))
+                        // .attr('stroke', 'black') // Add a border color here, 'black' is just an example
+                        // .attr('stroke-width', .5) // Set the border width here
                         .on('mouseover', function(event, d) {
                             // Get tooltip dimensions
                             const tooltipWidth = tooltip.node().getBoundingClientRect().width;
