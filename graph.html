@@ -41,8 +41,8 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const parseDate = d3.timeParse("%m/%d/%Y");
-        const formatDate = d3.timeFormat("%_m/%e/%Y");
+        const parseDate = d3.timeParse("%Y-%m-%d");
+        const formatDate = d3.timeFormat("%Y-%m-%d");
         const tooltip = d3.select("#tooltip");
         let svg;
 
@@ -75,7 +75,7 @@
         const drawGraph = () => {
             const [squareSize, squarePad, squaresInRow] = calculateSquareSize();
 
-            d3.csv('https://raw.githubusercontent.com/mweers/mweers.github.io/master/steps.csv')
+            d3.csv('steps.csv')
                 .then(data => {
                     data.forEach(d => {
                         d.Date = parseDate(d.Date);
@@ -89,7 +89,7 @@
                     svg = svg.enter().append('svg').merge(svg)
                         .attr('width', svgWidth)
                         .attr('height', svgHeight)
-                        .style('margin', '20px auto') // Add margin to top (and bottom for symmetry) while keeping it centered horizontally
+                        .style('margin', '1% auto') // Add margin to top (and bottom for symmetry) while keeping it centered horizontally
 
 
                     const squares = svg.selectAll('.day-square').data(data);
