@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Daily Step Count Activity Graph</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <style>
+        :root {
+            --color-light-muted-green: oklch(90% 0.14 145deg);
+            --color-light-green: oklch(80% 0.17 145deg);
+            --color-mid-green: oklch(70% 0.20 145deg);
+            --color-dark-green: oklch(60% 0.23 145deg);
+            --color-darker-muted-green: oklch(50% 0.26 145deg);
+            --gutter: 100px; /* Gutter size */
+        }
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
+        .tooltip {
+            position: absolute;
+            text-align: left;
+            width: auto;
+            height: auto;
+            padding: 2px;
+            font: 12px sans-serif;
+            background: oklch(0.943 0.017 61.953);
+            border: 1px solid oklch(0.898 0 89.876);
+            border-radius: 3px;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const parseDate = d3.timeParse("%m/%d/%Y");
+        const formatDate = d3.timeFormat("%_m/%e/%Y");
+        const tooltip = d3.select("#tooltip");
+        let svg;
+
+        const debounce = (func, wait) => {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        };
+
+        const calculateSquareSize = () => {
+            const bodyStyle = getComputedStyle(document.body);
+            const windowWidth = parseInt(bodyStyle.width, 10); // Get the computed width
+            const squarePad = 1;
+            const squareSize = 15;
+            const squaresInRow = Math.floor(windowWidth / (squareSize + squarePad));
+            return [(windowWidth / squaresInRow) - squarePad, squarePad, squaresInRow];
+        };
+
+        function determineColor(steps) {
+            const rootStyle = getComputedStyle(document.documentElement);
+            if (steps <= 15000) return rootStyle.getPropertyValue('--color-light-muted-green');
+            else if (steps <= 25000) return rootStyle.getPropertyValue('--color-light-green');
+            else if (steps <= 50000) return rootStyle.getPropertyValue('--color-mid-green');
+            else if (steps <= 70000) return rootStyle.getPropertyValue('--color-dark-green');
+            return rootStyle.getPropertyValue('--color-darker-muted-green');
+        }
+
+        const drawGraph = () => {
+            const [squareSize, squarePad, squaresInRow] = calculateSquareSize();
+
+            d3.csv('https://raw.githubusercontent.com/mweers/mweers.github.io/master/steps.csv')
+                .then(data => {
+                    data.forEach(d => {
+                        d.Date = parseDate(d.Date);
+                        d.Steps = +d.Steps;
+                    });
+
+                    const svgWidth = parseInt(getComputedStyle(document.body).width, 10);
+                    const svgHeight = (squareSize + squarePad) * Math.ceil(data.length / squaresInRow);
+
+                    svg = d3.select('body').selectAll('svg').data([null]);
+                    svg = svg.enter().append('svg').merge(svg)
+                        .attr('width', svgWidth)
+                        .attr('height', svgHeight)
+                        .style('display', 'block') // Ensure the SVG is block-level for centering
+                        .style('margin', 'auto'); // Automatically margin for horizontal centering
+
+                    const squares = svg.selectAll('.day-square').data(data);
+                    squares.enter().append('rect')
+                        .merge(squares)
+                        .attr('class', 'day-square')
+                        .attr('x', (_, i) => (squareSize + squarePad) * (i % squaresInRow))
+                        .attr('y', (_, i) => (squareSize + squarePad) * Math.floor(i / squaresInRow))
+                        .attr('width', squareSize)
+                        .attr('height', squareSize)
+                        .attr('rx', 5) // Rounded corner radius along x-axis
+                        .attr('ry', 5) // Rounded corner radius along y-axis
+                        .attr('fill', d => determineColor(d.Steps))
+                        .on('mouseover', function(event, d) {
+                            // Get tooltip dimensions
+                            const tooltipWidth = tooltip.node().getBoundingClientRect().width;
+                            const tooltipHeight = tooltip.node().getBoundingClientRect().height;
+
+                            // Calculate position for tooltip
+                            let topPosition = event.pageY - tooltipHeight - 10;
+                            let leftPosition = event.pageX + 5;
+
+                            // Ensure the tooltip is always within the visible window
+                            if (leftPosition + tooltipWidth > window.innerWidth) {
+                                leftPosition = window.innerWidth - tooltipWidth - 5;
+                            }
+                            if (topPosition < 0) {
+                                topPosition = event.pageY + 10; // Place it below the mouse cursor if it goes above the window
+                            }
+
+                            // Display the tooltip with updated position
+                            tooltip.transition()
+                                .duration(200)
+                                .style('opacity', .9);
+                            tooltip.html('Date: ' + formatDate(d.Date) + '<br>Steps: ' + d.Steps)
+                                .style('left', leftPosition + 'px')
+                                .style('top', topPosition + 'px');
+                        })
+                        .on('mouseout', function(d) {
+                            tooltip.transition()
+                                .duration(500)
+                                .style('opacity', 0);
+                        });
+
+                }).catch(error => {
+                console.error('Error loading the data: ', error);
+            });
+        };
+
+        window.addEventListener('resize', debounce(drawGraph, 250));
+        window.addEventListener('load', drawGraph);
+    });
+</script>
+</body>
+</html>
