@@ -21,7 +21,7 @@
             padding: 0;
             width: 99%;
             height: 100%;
-            background: oklch(0.958 0.01 145.496);
+            background: oklch(20% 0.35 145deg);
             overflow-x: hidden;
             overflow-y: hidden;
         }
@@ -30,7 +30,7 @@
             text-align: left;
             width: auto;
             height: auto;
-            padding: 0;
+            padding: 2px;
             font: 12px sans-serif;
             background: oklch(1 0 89.876);
             border: 1px solid oklch(0.898 0 89.876);
@@ -61,11 +61,11 @@
 
         const calculateSquareSize = () => {
             const bodyStyle = getComputedStyle(document.body);
-            const windowWidth = parseInt(bodyStyle.width, 10); // Get the computed width
-            const squarePad = 2;
+            const windowWidth = parseInt(bodyStyle.width, 10);
+            const squarePad = .5;
             const squareSize = 15;
             const squaresInRow = Math.floor(windowWidth / (squareSize + squarePad));
-            return [(windowWidth / squaresInRow) - squarePad, squarePad, squaresInRow];
+            return [squareSize, squarePad, squaresInRow];
         };
 
         function determineColor(steps) {
@@ -99,8 +99,7 @@
                     svg = svg.enter().append('svg').merge(svg)
                         .attr('width', svgWidth)
                         .attr('height', svgHeight)
-                        .style('margin', '1% auto') // Add margin to top (and bottom for symmetry) while keeping it centered horizontally
-
+                        .style('margin', '1% auto')
 
                     const squares = svg.selectAll('.day-square').data(data);
                     squares.enter().append('rect')
