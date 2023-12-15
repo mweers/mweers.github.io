@@ -16,8 +16,8 @@
 
 function makeChart(weight) {
   
-  var dayLabels = weight.map(function(d) {return d.date});
-  var stepData = weight.map(function(d) {return d.weight});
+  var dayLabels = index.map(function(d) {return d.date});
+  var stepData = index.map(function(d) {return d.weight});
   
   var chart = new Chart('chart', {
     type: 'line',
