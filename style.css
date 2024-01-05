@@ -1,64 +1,53 @@
 body {
 	background-color: #fbfffb;
-	font-family: 'Capriola', sans-serif;
-	margin: auto;
-    width: 50%;
-	padding: 20px;
+	font-size: 200px;
+	font-family: "Capriola", sans-serif;
+	margin: 0 auto; /* Combined margin and auto centering */
+	width: 100%;
+	padding: 0;
 }
 
-div.middle {
-    position: absolute;
-    left:50%;
-	top:50%;
+.middle {
+	position: initial;
 }
 
 .image:hover {
 	filter: invert(50%);
 }
 
-p {
-
+.social {
+	display: flex;
+	justify-content: center;
+	align-items: center; /* Optional, only if you want icons vertically centered too */
 }
 
+
 h1 {
-	/*color: #5a6d56;*/
+	/* Add color if needed */
 	font-size: 36px;
 }
 
-h2 {
-    margin:0;
-    padding:0;
+h2, h3, h4 {
+	margin: 0;
+	padding: 0;
 }
 
 h3 {
-    margin:0;
-	padding:0;
-	font-size: 16px;
-	font-weight:normal;
+	font-size: 200px;
+	font-weight: normal;
 }
 
-h4 {
-    margin:0;
-    padding:0;
-}
-div.main {
+.main {
 	background-color: lightgreen;
-	margin-left: 100px;
-	margin-right: 100px;
+	margin: 0 auto;
 	opacity: 0.25;
 }
 
-a:link, a:visited, a:hover, a:active {
-    text-decoration: none;
-	color: #5a6d56;
-	font-size: 20px;
-}
-
-a:link, a:visited, a:active {
+a {
+	text-decoration: none;
 	color: #5a6d56;
 }
 
 a:hover {
 	color: black;
-	
 }
