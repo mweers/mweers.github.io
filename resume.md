@@ -77,14 +77,16 @@
 ## SKILLS
 
 ### Development
-- Java, Bash, Javascript, Typescript, SQL, Gitlab CICD, Docker, DevOps, HTML, CSS
+- C#, VB, VBScript, Java, JavaScript, TypeScript, SQL, HTML, CSS, SvelteJS
+- Gitlab CICD, Docker, DevOps, GWT, ASP.NET, ASP Classic, Crystal Reports
 
 ### Quality Assurance
-- Automated Testing; Selenium, TestNG, Cypress, Jest.
-- Manual Testing; Functional, Integration, End-to-end, Smoke, TestRail, Jenkins.
+- Automated Testing; Selenium, TestNG, Cypress, Jest
+- Manual Testing; Functional, Integration, End-to-end, Smoke
+- Tools; TestRail, Jenkins, Postman, Swagger
 
 ### Other
-- Jira, Azure DevOps, Team Management
+- Jira, Azure DevOps, Team Management, SEO, CRM Management
 
 ## EDUCATION
 
