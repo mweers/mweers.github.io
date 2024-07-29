@@ -21,8 +21,8 @@
 
 - Designed and developed automated testing using Java and TestNG.
 - Modified the Gitlab CICD pipeline to build .NET artifacts, run tests, and push to storage.
-- Assumed responsibility for the automated regression tests of the client-facing GUI, using Selenium & TestNG.
-- Led two teams of QA Engineers; responsible for manual & automated testing.
+- Assumed responsibility for the automated regression tests of the client-facing GUI, using Selenium and TestNG.
+- Led two teams of QA Engineers; responsible for manual and automated testing.
 - Organized department events such as monthly game nights, potlucks, and gift exchanges.
 
 ### Consultant / Quality Assurance Analyst I
@@ -46,7 +46,7 @@
 **BlueSpring Wellness – Oklahoma City, OK**  
 *August 2017 – May 2019*
 
-- Developed POC & SEO reports, managed CRM reports and marketing campaigns, and handled the Shopify-based webstore using HTML, CSS, and JavaScript to improve consumer retention and increase conversions.
+- Developed POC and SEO reports, managed CRM reports and marketing campaigns, and handled the Shopify-based webstore using HTML, CSS, and JavaScript to improve consumer retention and increase conversions.
 
 ### Technical Analyst
 **MidFirst Bank – Oklahoma City, OK**  
