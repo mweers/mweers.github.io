@@ -15,7 +15,7 @@
 - Added functionality to screens on an Angular client-facing application.
 - Worked general bugfix and feature tasks for Java & .NET core backend services.
 
-### QA Team Lead / QA Engineer
+### QA Team Lead / Engineer
 **Revenue Management Solutions – Oklahoma City, OK**  
 *November 2022 – June 2024*
 
