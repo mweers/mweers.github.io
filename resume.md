@@ -62,15 +62,11 @@
 
 ## PERSONAL PROJECTS
 
-### IN-PROGRESS
-
 #### Backend
 - Go-based API that will combine various API sources; Google Fit, Withings, and Fitbit into a single API.
 
 #### Data Visualization
 - Graphs built using CSS Grid, and D3js.
-
-### PLANNING
 
 #### Frontend
 - SvelteJS based food journal that allows daily entry and summation of food intake.
