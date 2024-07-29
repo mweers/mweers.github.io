@@ -13,7 +13,7 @@
 - Created and modified reports for the internal administration GUI using C#, VB, VBScript, CSS, HTML, and JavaScript for ASP.NET and ASP Classic Webform pages.
 - Modified GWT (Google Web Toolkit) Java-based internal GUI used to key corrections for OCR exceptions.
 - Added functionality to screens on an Angular client-facing application.
-- Worked general bugfix and feature tasks for Java & .NET core backend services.
+- Worked general bugfix and feature tasks for Java and .NET core backend services.
 
 ### QA Team Lead / Engineer
 **Revenue Management Solutions – Oklahoma City, OK**  
