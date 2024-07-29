@@ -94,7 +94,7 @@
 **Bachelor of Science in Computer Science Major/Minor**  
 Northwestern Oklahoma State University – Alva, OK
 
-**Associate of Science in Digital Media and Design
+**Associate of Science in Digital Media and Design**
 Northern Oklahoma College – Tonkawa, OK 
 
 
