@@ -1,3 +1,36 @@
+// Constants and configurations
+const CONFIG = {
+    parseDate: d3.timeParse("%Y-%m-%d"),
+    formatDate: d3.timeFormat("%Y-%m-%d"),
+    csvPath: 'steps.csv',
+    tooltipDuration: {
+        fadeIn: 200,
+        fadeOut: 500
+    },
+    stepRanges: [
+        { limit: 5000, color: '--color-step-1', label: '0-5k' },
+        { limit: 10000, color: '--color-step-2', label: '5k-10k' },
+        { limit: 15000, color: '--color-step-3', label: '10k-15k' },
+        { limit: 20000, color: '--color-step-4', label: '15k-20k' },
+        { limit: 25000, color: '--color-step-5', label: '20k-25k' },
+        { limit: 30000, color: '--color-step-6', label: '25k-30k' },
+        { limit: 35000, color: '--color-step-7', label: '30k-35k' },
+        { limit: 40000, color: '--color-step-8', label: '35k-40k' },
+        { limit: 45000, color: '--color-step-9', label: '40k-45k' },
+        { limit: 50000, color: '--color-step-10', label: '45k-50k' },
+        { limit: 55000, color: '--color-step-11', label: '50k-55k' },
+        { limit: 60000, color: '--color-step-12', label: '55k-60k' },
+        { limit: 65000, color: '--color-step-13', label: '60k-65k' },
+        { limit: 70000, color: '--color-step-14', label: '65k-70k' },
+        { limit: 75000, color: '--color-step-15', label: '70k-75k' },
+        { limit: 80000, color: '--color-step-16', label: '75k-80k' },
+        { limit: 85000, color: '--color-step-17', label: '80k-85k' },
+        { limit: 90000, color: '--color-step-18', label: '85k-90k' },
+        { limit: 95000, color: '--color-step-19', label: '90k-95k' },
+        { limit: 100000, color: '--color-step-20', label: '95k-100k' }
+    ]
+};
+
 class StepsVisualization {
     constructor() {
         this.tooltip = d3.select("#tooltip");

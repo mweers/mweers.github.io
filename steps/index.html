@@ -7,28 +7,22 @@
     <link rel="stylesheet" type="text/css" href="steps.css">
     <!-- Add Lodash for debouncing -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
-    <!-- Update to latest D3 version -->
+    <!-- Use latest D3 version -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
 <div class="container">
+    <!-- Stats section -->
+    <div id="stats" class="stats"></div>
 
-    <div class="visualization-wrapper">
-        <!-- Stats section -->
-        <div id="stats" class="stats"></div>
+    <!-- Legend section -->
+    <div id="legend" class="legend"></div>
 
-        <!-- Legend section -->
-        <div id="legend" class="legend"></div>
+    <!-- Main grid -->
+    <div id="grid-container" class="grid-container"></div>
 
-        <!-- Main grid -->
-        <div id="grid-container" class="grid-container"></div>
-
-        <!-- Tooltip -->
-        <div id="tooltip" class="tooltip"></div>
-    </div>
-
-    <!-- Error container for potential error messages -->
-    <div id="error-container"></div>
+    <!-- Tooltip -->
+    <div id="tooltip" class="tooltip"></div>
 </div>
 
 <!-- Your custom JS -->
