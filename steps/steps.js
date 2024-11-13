@@ -7,28 +7,11 @@ const CONFIG = {
         fadeIn: 200,
         fadeOut: 500
     },
-    stepRanges: [
-        { limit: 5000, color: '--color-step-1' },
-        { limit: 10000, color: '--color-step-2' },
-        { limit: 15000, color: '--color-step-3' },
-        { limit: 20000, color: '--color-step-4' },
-        { limit: 25000, color: '--color-step-5' },
-        { limit: 30000, color: '--color-step-6' },
-        { limit: 35000, color: '--color-step-7' },
-        { limit: 40000, color: '--color-step-8' },
-        { limit: 45000, color: '--color-step-9' },
-        { limit: 50000, color: '--color-step-10' },
-        { limit: 55000, color: '--color-step-11' },
-        { limit: 60000, color: '--color-step-12' },
-        { limit: 65000, color: '--color-step-13' },
-        { limit: 70000, color: '--color-step-14' },
-        { limit: 75000, color: '--color-step-15' },
-        { limit: 80000, color: '--color-step-16' },
-        { limit: 85000, color: '--color-step-17' },
-        { limit: 90000, color: '--color-step-18' },
-        { limit: 95000, color: '--color-step-19' },
-        { limit: 100000, color: '--color-step-20' }
-    ]
+    colorSteps: {
+        start: '--color-step-start',    // lightest
+        middle: '--color-step-middle',   // middle
+        end: '--color-step-end'      // darkest
+    }
 };
 
 class StepsVisualization {
@@ -36,12 +19,34 @@ class StepsVisualization {
         this.tooltip = d3.select("#tooltip");
         this.container = d3.select('#grid-container');
         this.data = null;
-        this.init();
+        this.colorSteps = this.generateColorSteps();
     }
 
-    init() {
+    generateColorSteps() {
+        const firstHalf = d3.scaleLinear()
+            .domain([0, 9])
+            .range([1, 10]);
+
+        const secondHalf = d3.scaleLinear()
+            .domain([10, 19])
+            .range([11, 20]);
+
+        return Array.from({ length: 20 }, (_, i) => {
+            const stepNumber = i < 10 ? Math.round(firstHalf(i)) : Math.round(secondHalf(i));
+            return {
+                limit: (i + 1) * 5000,
+                color: `--color-step-${stepNumber}`
+            };
+        });
+    }
+
+    async init() {
         this.setupEventListeners();
-        this.loadData();
+        try {
+            await this.loadData();
+        } catch (error) {
+            console.error('Failed to initialize visualization:', error);
+        }
     }
 
     setupEventListeners() {
@@ -53,7 +58,8 @@ class StepsVisualization {
         try {
             const response = await fetch('steps.csv');
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                this.showError(`HTTP error! status: ${response.status}`);
+                return;
             }
 
             const csvText = await response.text();
@@ -63,7 +69,8 @@ class StepsVisualization {
             }));
 
             if (!data || data.length === 0) {
-                throw new Error('No data found in CSV file');
+                this.showError('No data found in CSV file');
+                return;
             }
 
             this.data = data;
@@ -94,8 +101,8 @@ class StepsVisualization {
 
     determineColor(steps) {
         const rootStyle = getComputedStyle(document.documentElement);
-        const range = CONFIG.stepRanges.find(range => steps <= range.limit)
-            || CONFIG.stepRanges[CONFIG.stepRanges.length - 1];
+        const range = this.colorSteps.find(step => steps <= step.limit)
+            || this.colorSteps[this.colorSteps.length - 1];
         return rootStyle.getPropertyValue(range.color);
     }
 
@@ -140,5 +147,8 @@ class StepsVisualization {
 
 // Initialize on DOM load
 document.addEventListener('DOMContentLoaded', () => {
-    new StepsVisualization();
+    const viz = new StepsVisualization();
+    viz.init().catch(error => {
+        console.error('Failed to initialize visualization:', error);
+    });
 });
