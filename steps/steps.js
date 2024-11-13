@@ -1,43 +1,35 @@
-// Constants and configurations
-const CONFIG = {
-    parseDate: d3.timeParse("%Y-%m-%d"),
-    formatDate: d3.timeFormat("%Y-%m-%d"),
-    csvPath: 'steps.csv',
-    tooltipDuration: {
-        fadeIn: 200,
-        fadeOut: 500
-    },
-    colorSteps: {
-        start: '--color-step-start',    // lightest
-        middle: '--color-step-middle',   // middle
-        end: '--color-step-end'      // darkest
-    }
-};
-
 class StepsVisualization {
     constructor() {
         this.tooltip = d3.select("#tooltip");
         this.container = d3.select('#grid-container');
         this.data = null;
         this.colorSteps = this.generateColorSteps();
+        this.debouncedDraw = _.debounce(() => this.drawGraph(), 250);
     }
 
     generateColorSteps() {
+        const rootStyle = getComputedStyle(document.documentElement);
+        const startColor = rootStyle.getPropertyValue('--color-step-start').trim();
+        const middleColor = rootStyle.getPropertyValue('--color-step-middle').trim();
+        const endColor = rootStyle.getPropertyValue('--color-step-end').trim();
+
+        // Create two interpolators: start->middle and middle->end
         const firstHalf = d3.scaleLinear()
             .domain([0, 9])
-            .range([1, 10]);
+            .range([startColor, middleColor]);
 
         const secondHalf = d3.scaleLinear()
             .domain([10, 19])
-            .range([11, 20]);
+            .range([middleColor, endColor]);
 
-        return Array.from({ length: 20 }, (_, i) => {
-            const stepNumber = i < 10 ? Math.round(firstHalf(i)) : Math.round(secondHalf(i));
-            return {
-                limit: (i + 1) * 5000,
-                color: `--color-step-${stepNumber}`
-            };
-        });
+        return Array.from({ length: 20 }, (_, i) => ({
+            limit: (i + 1) * 5000,
+            color: i < 10 ? firstHalf(i) : secondHalf(i)
+        }));
+    }
+
+    setupEventListeners() {
+        window.addEventListener('resize', this.debouncedDraw);
     }
 
     async init() {
@@ -49,11 +41,6 @@ class StepsVisualization {
         }
     }
 
-    setupEventListeners() {
-        const debouncedDraw = _.debounce(() => this.drawGraph(), 250);
-        window.addEventListener('resize', debouncedDraw);
-    }
-
     async loadData() {
         try {
             const response = await fetch('steps.csv');
@@ -62,13 +49,15 @@ class StepsVisualization {
                 return;
             }
 
-            const csvText = await response.text();
-            const data = d3.csvParse(csvText, d => ({
-                Date: CONFIG.parseDate(d.Date),
-                Steps: +d.Steps
-            }));
+            const data = d3.csvParse(
+                await response.text(),
+                d => ({
+                    Date: d3.timeParse("%Y-%m-%d")(d.Date),
+                    Steps: +d.Steps || 0 // Handle potential NaN values
+                })
+            );
 
-            if (!data || data.length === 0) {
+            if (!data?.length) {
                 this.showError('No data found in CSV file');
                 return;
             }
@@ -100,16 +89,17 @@ class StepsVisualization {
     }
 
     determineColor(steps) {
-        const rootStyle = getComputedStyle(document.documentElement);
         const range = this.colorSteps.find(step => steps <= step.limit)
             || this.colorSteps[this.colorSteps.length - 1];
-        return rootStyle.getPropertyValue(range.color);
+        return range.color;
     }
 
     handleTooltip(event, d) {
+        if (!d?.Date || !d?.Steps) return;
+
         const tooltipContent = `
             <div class="tooltip-content">
-                <strong>Date:</strong> ${CONFIG.formatDate(d.Date)}<br>
+                <strong>Date:</strong> ${d3.timeFormat("%Y-%m-%d")(d.Date)}<br>
                 <strong>Steps:</strong> ${d.Steps.toLocaleString()}
             </div>
         `;
@@ -119,12 +109,12 @@ class StepsVisualization {
             .style('left', `${event.pageX + 10}px`)
             .style('top', `${event.pageY - 28}px`)
             .transition()
-            .duration(CONFIG.tooltipDuration.fadeIn)
+            .duration(200)
             .style('opacity', 1);
     }
 
     drawGraph() {
-        if (!this.data) return;
+        if (!this.data?.length) return;
 
         this.container.selectAll('*').remove();
 
@@ -139,7 +129,7 @@ class StepsVisualization {
             .on('mouseout', () => {
                 this.tooltip
                     .transition()
-                    .duration(CONFIG.tooltipDuration.fadeOut)
+                    .duration(500)
                     .style('opacity', 0);
             });
     }
