@@ -4,7 +4,21 @@ class StepsVisualization {
         this.container = d3.select('#grid-container');
         this.data = null;
         this.colorSteps = this.generateColorSteps();
-        this.debouncedDraw = _.debounce(() => this.drawGraph(), 250);
+        this.debouncedDraw = _.debounce(() => {
+            this.calculateGridSize();
+            this.drawGraph();
+        }, 250);
+    }
+
+    calculateGridSize() {
+        const containerWidth = this.container.node().getBoundingClientRect().width;
+        const minSquareSize = 8; // Reduced from 15px
+        const gap = 1; // Reduced from 2px
+        const columns = Math.floor(containerWidth / (minSquareSize + gap));
+        
+        this.container
+            .style('grid-template-columns', `repeat(${columns}, ${minSquareSize}px)`)
+            .style('gap', `${gap}px`);
     }
 
     generateColorSteps() {
@@ -112,11 +126,11 @@ class StepsVisualization {
             .duration(200)
             .style('opacity', 1);
     }
-
     drawGraph() {
         if (!this.data?.length) return;
 
         this.container.selectAll('*').remove();
+        this.calculateGridSize();
 
         this.container
             .selectAll('.day-square')
