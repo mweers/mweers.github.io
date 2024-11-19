@@ -1,21 +1,24 @@
 :root {
-    /* Step colors */
+    /* Colors */
     --color-step-start: oklch(98% 0.10 145deg);
     --color-step-middle: oklch(62% 0.28 145deg);
     --color-step-end: oklch(22% 0.48 145deg);
-
-    /* Background colors */
     --color-background: oklch(20% 0.35 145deg);
-
-    /* UI colors */
     --color-tooltip-bg: white;
     --color-error-bg: white;
     --color-button-bg: oklch(30% 0.35 145deg);
     --color-button-text: white;
 
     /* Sizing */
-    --square-size: clamp(8px, 1.5vw, 15px);
-    --gap-size: clamp(1px, 0.2vw, 2px);
+    --min-square: 8px;
+    --max-square: 15px;
+    /* Size based on viewport height, accounting for padding and gaps */
+    --square-size: clamp(
+            var(--min-square),
+            calc(98vh / 35),  /* Adjust divisor based on your data rows */
+            var(--max-square)
+    );
+    --gap-size: max(1px, calc(var(--square-size) * 0.1));
 }
 
 body, html {
@@ -29,7 +32,7 @@ body, html {
 
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(var(--square-size), 0fr));
+    grid-template-columns: repeat(auto-fill, var(--square-size));
     grid-gap: var(--gap-size);
     padding: 1%;
     box-sizing: border-box;
