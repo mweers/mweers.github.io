@@ -15,7 +15,8 @@ body, html {
 
 .grid-container {
     display: grid;
-    grid-gap: 1px;
+    grid-template-columns: repeat(auto-fill, minmax(8px, 0fr));
+    grid-gap: 2px;
     padding: 1%;
     box-sizing: border-box;
     background: oklch(20% 0.35 145deg);
@@ -28,6 +29,7 @@ body, html {
 .day-square {
     width: 8px;
     height: 8px;
+    background-color: var(--color-step-1);
     transition: transform 0.2s;
 }
 
@@ -73,9 +75,9 @@ body, html {
 
 @media (min-width: 768px) {
     .grid-container {
-        grid-gap: 2px;
+        grid-template-columns: repeat(auto-fill, minmax(15px, 0fr));
     }
-    
+
     .day-square {
         width: 15px;
         height: 15px;
