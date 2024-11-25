@@ -6,6 +6,7 @@ class StepsVisualization {
         this.colorSteps = this.generateColorSteps();
         // Remove debounce to make it more responsive
         this.debouncedDraw = () => this.drawGraph();
+        this.calculateSquareSize = this.calculateSquareSize.bind(this);
     }
 
     generateColorSteps() {
@@ -113,11 +114,32 @@ class StepsVisualization {
             .style('opacity', 1);
     }
 
+    calculateSquareSize() {
+        if (!this.data?.length) return 0;
+        
+        const containerWidth = this.container.node().getBoundingClientRect().width;
+        const containerHeight = window.innerHeight * 0.9; // Use 90% of viewport height
+        
+        // Calculate squares per row and total rows needed
+        const totalSquares = this.data.length;
+        const aspectRatio = containerWidth / containerHeight;
+        const rows = Math.ceil(Math.sqrt(totalSquares / aspectRatio));
+        const cols = Math.ceil(totalSquares / rows);
+        
+        // Calculate square size based on container dimensions and grid layout
+        return Math.floor(Math.min(
+            containerWidth / cols,
+            containerHeight / rows
+        ));
+    }
+
     drawGraph() {
         if (!this.data?.length) return;
 
         this.container.selectAll('*').remove();
-
+        
+        const squareSize = this.calculateSquareSize();
+        
         this.container
             .selectAll('.day-square')
             .data(this.data)
@@ -125,6 +147,8 @@ class StepsVisualization {
             .append('div')
             .attr('class', 'day-square')
             .style('background-color', d => this.determineColor(d.Steps))
+            .style('width', `${squareSize}px`)
+            .style('height', `${squareSize}px`)
             .on('mouseover', (event, d) => this.handleTooltip(event, d))
             .on('mouseout', () => {
                 this.tooltip
