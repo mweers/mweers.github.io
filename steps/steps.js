@@ -117,8 +117,9 @@ class StepsVisualization {
     calculateSquareSize() {
         if (!this.data?.length) return 0;
         
-        const containerWidth = this.container.node().getBoundingClientRect().width;
-        const containerHeight = window.innerHeight * 0.9; // Use 90% of viewport height
+        const gapSize = 2; // Fixed gap size in pixels
+        const containerWidth = this.container.node().getBoundingClientRect().width - gapSize; // Account for right edge
+        const containerHeight = window.innerHeight * 0.9 - gapSize; // Account for bottom edge
         
         // Calculate squares per row and total rows needed
         const totalSquares = this.data.length;
@@ -126,10 +127,10 @@ class StepsVisualization {
         const rows = Math.ceil(Math.sqrt(totalSquares / aspectRatio));
         const cols = Math.ceil(totalSquares / rows);
         
-        // Calculate square size based on container dimensions and grid layout
+        // Calculate square size accounting for gaps
         return Math.floor(Math.min(
-            containerWidth / cols,
-            containerHeight / rows
+            (containerWidth - (cols - 1) * gapSize) / cols,
+            (containerHeight - (rows - 1) * gapSize) / rows
         ));
     }
 
