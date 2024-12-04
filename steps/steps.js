@@ -4,7 +4,8 @@ class StepsVisualization {
         this.container = d3.select('#grid-container');
         this.data = null;
         this.colorSteps = this.generateColorSteps();
-        this.draw = () => this.drawGraph();
+        this.handleTooltip = this.handleTooltip.bind(this);
+        this.draw = this.drawGraph.bind(this);
     }
 
     generateColorSteps() {
@@ -27,10 +28,6 @@ class StepsVisualization {
         }));
     }
 
-    setupEventListeners() {
-        window.addEventListener('resize', this.draw);
-    }
-
     async init() {
         this.setupEventListeners();
         try {
@@ -44,7 +41,7 @@ class StepsVisualization {
         try {
             const response = await fetch('steps.csv');
             if (!response.ok) {
-                this.showError(`HTTP error! status: ${response.status}`);
+                console.error(`HTTP error! status: ${response.status}`);
                 return;
             }
 
@@ -57,7 +54,7 @@ class StepsVisualization {
             );
 
             if (!data?.length) {
-                this.showError('No data found in CSV file');
+                console.error('No data found in CSV file');
                 return;
             }
 
@@ -65,26 +62,7 @@ class StepsVisualization {
             this.drawGraph();
         } catch (error) {
             console.error('Error loading data:', error);
-            this.showError(error.message);
         }
-    }
-
-    showError(message) {
-        this.container
-            .html('')
-            .append('div')
-            .attr('class', 'error-message')
-            .html(`
-                <h3>Error Loading Data</h3>
-                <p>${message}</p>
-                <p>Please check that:</p>
-                <ul>
-                    <li>The steps.csv file exists in the correct location</li>
-                    <li>The file is being served through a web server (not opened directly)</li>
-                    <li>The CSV format is correct (Date,Steps)</li>
-                </ul>
-                <button onclick="location.reload()">Retry</button>
-            `);
     }
 
     determineColor(steps) {
@@ -134,9 +112,7 @@ class StepsVisualization {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const viz = new StepsVisualization();
-    viz.init().catch(error => {
-        console.error('Failed to initialize visualization:', error);
-    });
+const viz = new StepsVisualization();
+viz.init().catch(error => {
+    console.error('Failed to initialize visualization:', error);
 });
