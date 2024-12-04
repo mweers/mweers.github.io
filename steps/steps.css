@@ -9,16 +9,8 @@
     --color-button-bg: oklch(30% 0.35 145deg);
     --color-button-text: white;
 
-    /* Sizing */
-    --min-square: 8px;
-    --max-square: 15px;
-    /* Size based on viewport height, accounting for padding and gaps */
-    --square-size: clamp(
-            var(--min-square),
-            calc(98vh / 35),  /* Adjust divisor based on your data rows */
-            var(--max-square)
-    );
-    --gap-size: max(1px, calc(var(--square-size) * 0.1));
+    --square-size: min(2vh, 2vw);
+    --gap-size: min(0.2vh, 0.2vw);
 }
 
 body, html {
@@ -87,10 +79,4 @@ body, html {
     background: var(--color-button-bg);
     color: var(--color-button-text);
     cursor: pointer;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .day-square {
-        transition: none;
-    }
 }
