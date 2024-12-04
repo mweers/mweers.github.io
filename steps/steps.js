@@ -38,19 +38,10 @@ class StepsVisualization {
 
     async loadData() {
         try {
-            const response = await fetch('steps.csv');
-            if (!response.ok) {
-                console.error(`HTTP error! status: ${response.status}`);
-                return;
-            }
-
-            const data = d3.csvParse(
-                await response.text(),
-                d => ({
-                    Date: d3.timeParse("%Y-%m-%d")(d.Date),
-                    Steps: +d.Steps || 0
-                })
-            );
+            const data = await d3.csv('steps.csv', d => ({
+                Date: d3.timeParse("%Y-%m-%d")(d.Date),
+                Steps: +d.Steps || 0
+            }));
 
             if (!data?.length) {
                 console.error('No data found in CSV file');
