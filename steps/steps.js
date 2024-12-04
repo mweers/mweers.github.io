@@ -29,7 +29,6 @@ class StepsVisualization {
     }
 
     async init() {
-        this.setupEventListeners();
         try {
             await this.loadData();
         } catch (error) {
