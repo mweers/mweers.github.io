@@ -38,7 +38,7 @@ class StepsVisualization {
 
     async loadData() {
         try {
-            const data = await d3.csv('steps.csv', d => ({
+            const data = await d3.csv("https://raw.githubusercontent.com/mweers/mweers.github.io/refs/heads/master/steps/steps.csv", d => ({
                 Date: d3.timeParse("%Y-%m-%d")(d.Date),
                 Steps: +d.Steps || 0
             }));
