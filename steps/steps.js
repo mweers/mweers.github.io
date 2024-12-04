@@ -4,9 +4,7 @@ class StepsVisualization {
         this.container = d3.select('#grid-container');
         this.data = null;
         this.colorSteps = this.generateColorSteps();
-        // Remove debounce to make it more responsive
-        this.debouncedDraw = () => this.drawGraph();
-        this.calculateSquareSize = this.calculateSquareSize.bind(this);
+        this.draw = () => this.drawGraph();
     }
 
     generateColorSteps() {
@@ -30,7 +28,7 @@ class StepsVisualization {
     }
 
     setupEventListeners() {
-        window.addEventListener('resize', this.debouncedDraw);
+        window.addEventListener('resize', this.draw);
     }
 
     async init() {
@@ -114,33 +112,11 @@ class StepsVisualization {
             .style('opacity', 1);
     }
 
-    calculateSquareSize() {
-        if (!this.data?.length) return 0;
-        
-        const gapSize = 2; // Fixed gap size in pixels
-        const containerWidth = this.container.node().getBoundingClientRect().width - gapSize; // Account for right edge
-        const containerHeight = window.innerHeight * 0.9 - gapSize; // Account for bottom edge
-        
-        // Calculate squares per row and total rows needed
-        const totalSquares = this.data.length;
-        const aspectRatio = containerWidth / containerHeight;
-        const rows = Math.ceil(Math.sqrt(totalSquares / aspectRatio));
-        const cols = Math.ceil(totalSquares / rows);
-        
-        // Calculate square size accounting for gaps
-        return Math.floor(Math.min(
-            (containerWidth - (cols - 1) * gapSize) / cols,
-            (containerHeight - (rows - 1) * gapSize) / rows
-        ));
-    }
-
     drawGraph() {
         if (!this.data?.length) return;
 
         this.container.selectAll('*').remove();
-        
-        const squareSize = this.calculateSquareSize();
-        
+
         this.container
             .selectAll('.day-square')
             .data(this.data)
@@ -148,8 +124,6 @@ class StepsVisualization {
             .append('div')
             .attr('class', 'day-square')
             .style('background-color', d => this.determineColor(d.Steps))
-            .style('width', `${squareSize}px`)
-            .style('height', `${squareSize}px`)
             .on('mouseover', (event, d) => this.handleTooltip(event, d))
             .on('mouseout', () => {
                 this.tooltip
@@ -160,7 +134,6 @@ class StepsVisualization {
     }
 }
 
-// Initialize on DOM load
 document.addEventListener('DOMContentLoaded', () => {
     const viz = new StepsVisualization();
     viz.init().catch(error => {
