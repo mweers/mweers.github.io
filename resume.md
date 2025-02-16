@@ -10,7 +10,8 @@
 **Revenue Management Solutions – Oklahoma City, OK**  
 *Feb 2023 – Current*
 
-- Created and modified reports for the internal administration GUI using C#, VB, VBScript, CSS, HTML, and JavaScript for ASP.NET and ASP Classic Webform pages.
+- Increased OCR processing accuracy by developing AI-assisted templates that guided an AI model to mitigate shifting distortions, reducing extraction exceptions.
+- Built reports for the internal administration GUI using C#, VB, VBScript, CSS, HTML, and JavaScript for ASP.NET and ASP Classic Webform pages.
 - Modified GWT (Google Web Toolkit) Java-based internal GUI used to key corrections for OCR (Optical Character Recognition) exceptions.
 - Added functionality to screens on an Angular client-facing application.
 - Worked general bugfix and feature tasks for Java and .NET core backend services.
@@ -19,7 +20,7 @@
 **Revenue Management Solutions – Oklahoma City, OK**  
 *November 2022 – June 2024*
 
-- Designed and developed automated testing using Java and TestNG.
+- Architected automated testing using Java and TestNG.
 - Modified the Gitlab CICD pipeline to build .NET artifacts, run tests, and push to storage.
 - Assumed responsibility for the automated regression tests of the client-facing GUI, using Selenium and TestNG.
 - Led two teams of QA Engineers; responsible for manual and automated testing.
