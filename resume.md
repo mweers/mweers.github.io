@@ -10,21 +10,19 @@
 **Revenue Management Solutions – Oklahoma City, OK**  
 *Feb 2023 – Current*
 
-- Increased OCR processing accuracy by developing AI-assisted templates that guided an AI model to mitigate shifting distortions, reducing extraction exceptions.
-- Built reports for the internal administration GUI using C#, VB, VBScript, CSS, HTML, and JavaScript for ASP.NET and ASP Classic Webform pages.
-- Modified GWT (Google Web Toolkit) Java-based internal GUI used to key corrections for OCR (Optical Character Recognition) exceptions.
+- Decreased OCR (Optical Character Recognition) exceptions by developing AI-assisted templates that mitigated page shifting.
+- Built internal ASP-based reporting and administration tools using C#, VB, VBScript, CSS, HTML, and JavaScript.
+- Modified GWT (Google Web Toolkit) Java-based internal GUIs used to key corrections for OCR exceptions.
 - Added functionality to screens on an Angular client-facing application.
-- Worked general bugfix and feature tasks for Java and .NET core backend services.
+- Worked general bugfix and feature tasks for Java and .NET backend and Angular frontend services.
 
 ### QA Team Lead / Engineer
 **Revenue Management Solutions – Oklahoma City, OK**  
 *November 2022 – June 2024*
 
-- Architected automated testing using Java and TestNG.
+- Architected automated testing solutions using Java and TestNG.
 - Modified the Gitlab CICD pipeline to build .NET artifacts, run tests, and push to storage.
 - Assumed responsibility for the automated regression tests of the client-facing GUI, using Selenium and TestNG.
-- Led two teams of QA Engineers; responsible for manual and automated testing.
-- Organized department events such as monthly game nights, potlucks, and gift exchanges.
 
 ### Consultant / Quality Assurance Analyst I
 **Rural Sourcing Inc. – Oklahoma City, OK**  
@@ -32,8 +30,7 @@
 
 - Utilized Cypress and TypeScript to automate testing of a schedule comparison application, enabling users to identify overlapping availability.
 - Automated API calls to an AWS SQS and SNS backend service that calculates PTO using the Jest testing framework and Typescript.
-- Manual click-testing of React-based frontend and the API Testing, using Postman/Swagger, of C# backend microservice; running locally via Docker.
-- Organized weekly virtual gatherings.
+- Manual testing of React-based frontend and the API Testing, using Postman/Swagger, of C# backend microservice; running locally via Docker.
 
 ### Quality Assurance Analyst
 **Revenue Management Solutions – Oklahoma City, OK**  
