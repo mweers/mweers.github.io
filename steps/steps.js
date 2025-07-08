@@ -6,6 +6,7 @@ class StepsVisualization {
         this.colorSteps = this.generateColorSteps();
         this.handleTooltip = this.handleTooltip.bind(this);
         this.draw = this.drawGraph.bind(this);
+        window.addEventListener('resize', _.debounce(this.draw.bind(this), 200));
     }
 
     generateColorSteps() {
@@ -85,12 +86,37 @@ class StepsVisualization {
 
         this.container.selectAll('*').remove();
 
+        const containerWidth = this.container.node().getBoundingClientRect().width;
+        const containerHeight = this.container.node().getBoundingClientRect().height;
+        const numItems = this.data.length;
+
+        let bestLayout = {
+            cols: 0,
+            rows: 0,
+            squareSize: 0,
+        };
+
+        for (let cols = 1; cols <= numItems; cols++) {
+            const rows = Math.ceil(numItems / cols);
+            const squareWidth = containerWidth / cols;
+            const squareHeight = containerHeight / rows;
+            const squareSize = Math.min(squareWidth, squareHeight);
+
+            if (squareSize > bestLayout.squareSize) {
+                bestLayout = { cols, rows, squareSize };
+            }
+        }
+
+        const { squareSize } = bestLayout;
+
         this.container
             .selectAll('.day-square')
             .data(this.data)
             .enter()
             .append('div')
             .attr('class', 'day-square')
+            .style('width', `${squareSize}px`)
+            .style('height', `${squareSize}px`)
             .style('background-color', d => this.determineColor(d.Steps))
             .on('mouseover', (event, d) => this.handleTooltip(event, d))
             .on('mouseout', () => {

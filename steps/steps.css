@@ -8,9 +8,6 @@
     --color-error-bg: white;
     --color-button-bg: oklch(30% 0.35 145deg);
     --color-button-text: white;
-
-    --square-size: min(2vh, 2vw);
-    --gap-size: min(0.2vh, 0.2vw);
 }
 
 body, html {
@@ -23,21 +20,16 @@ body, html {
 }
 
 .grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, var(--square-size));
-    grid-gap: var(--gap-size);
-    padding: 1%;
-    box-sizing: border-box;
-    background: var(--color-background);
-    align-content: start;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start; /* Aligns rows to the top */
     width: 100%;
     height: 100%;
-    margin: auto;
+    box-sizing: border-box;
 }
 
 .day-square {
-    width: var(--square-size);
-    height: var(--square-size);
+    box-sizing: border-box;
     transition: transform 0.2s;
 }
 
