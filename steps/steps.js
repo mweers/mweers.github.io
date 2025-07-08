@@ -5,8 +5,6 @@ class StepsVisualization {
         this.data = null;
         this.colorSteps = this.generateColorSteps();
         this.handleTooltip = this.handleTooltip.bind(this);
-        this.draw = this.drawGraph.bind(this);
-        window.addEventListener('resize', _.debounce(this.draw.bind(this), 200));
     }
 
     generateColorSteps() {
@@ -32,6 +30,7 @@ class StepsVisualization {
     async init() {
         try {
             await this.loadData();
+            this.drawGraph();
         } catch (error) {
             console.error('Failed to initialize visualization:', error);
         }
@@ -50,7 +49,6 @@ class StepsVisualization {
             }
 
             this.data = data;
-            this.drawGraph();
         } catch (error) {
             console.error('Error loading data:', error);
         }
@@ -86,37 +84,12 @@ class StepsVisualization {
 
         this.container.selectAll('*').remove();
 
-        const containerWidth = this.container.node().getBoundingClientRect().width;
-        const containerHeight = this.container.node().getBoundingClientRect().height;
-        const numItems = this.data.length;
-
-        let bestLayout = {
-            cols: 0,
-            rows: 0,
-            squareSize: 0,
-        };
-
-        for (let cols = 1; cols <= numItems; cols++) {
-            const rows = Math.ceil(numItems / cols);
-            const squareWidth = containerWidth / cols;
-            const squareHeight = containerHeight / rows;
-            const squareSize = Math.min(squareWidth, squareHeight);
-
-            if (squareSize > bestLayout.squareSize) {
-                bestLayout = { cols, rows, squareSize };
-            }
-        }
-
-        const { squareSize } = bestLayout;
-
         this.container
             .selectAll('.day-square')
             .data(this.data)
             .enter()
             .append('div')
             .attr('class', 'day-square')
-            .style('width', `${squareSize}px`)
-            .style('height', `${squareSize}px`)
             .style('background-color', d => this.determineColor(d.Steps))
             .on('mouseover', (event, d) => this.handleTooltip(event, d))
             .on('mouseout', () => {
@@ -128,7 +101,9 @@ class StepsVisualization {
     }
 }
 
-const viz = new StepsVisualization();
-viz.init().catch(error => {
-    console.error('Failed to initialize visualization:', error);
+window.addEventListener('load', () => {
+    const viz = new StepsVisualization();
+    viz.init().catch(error => {
+        console.error('Failed to initialize visualization:', error);
+    });
 });
